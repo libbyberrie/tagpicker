@@ -10,105 +10,105 @@
  * and is a simpification of how the actual API would work.
  */
 
-import uuid from "uuid/dist/v4";
+import uuid from 'uuid/dist/v4'
 
 /**
  * Parameters
  */
-const latency = 500;
+const latency = 500
 
 /**
  * Mocked data storage
  */
 const tags = [
   {
-    uuid: "aaaa-bbbb-cccc-dddd",
-    title: "Donor",
-    color: "red"
+    uuid: 'aaaa-bbbb-cccc-dddd',
+    title: 'Donor',
+    color: 'red',
   },
   {
-    uuid: "eeee-ffff-gggg-hhhh",
-    title: "Fundraiser",
-    color: "blue"
-  }
-];
+    uuid: 'eeee-ffff-gggg-hhhh',
+    title: 'Fundraiser',
+    color: 'blue',
+  },
+]
 
 const users = [
   {
-    uuid: "1111-2222-3333-4444",
-    fullName: "Aizah Wilkerson",
-    tags: ["aaaa-bbbb-cccc-dddd"]
-  }
-];
+    uuid: '1111-2222-3333-4444',
+    fullName: 'Aizah Wilkerson',
+    tags: ['aaaa-bbbb-cccc-dddd'],
+  },
+]
 
-const tagColors = ["#C8E8FF", "#B2419A", "#B7EDD5", "#EDB7B7", "#4654B2"];
+const tagColors = ['#C8E8FF', '#B2419A', '#B7EDD5', '#EDB7B7', '#4654B2']
 
 /**
  * Chooses a random tag color
  * @returns {string} The generated color
  */
 const generateTagColor = () => {
-  return tagColors[Math.floor(Math.random() * tagColors.length)];
-};
+  return tagColors[Math.floor(Math.random() * tagColors.length)]
+}
 
 /**
  * Fetch all available tags
  * @returns {Promise<tag[]>} An array of all tags
  */
 export const fetchTags = () => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
-      resolve(tags);
-    }, latency);
-  });
-};
+      resolve(tags)
+    }, latency)
+  })
+}
 
 /**
  * Save a new tag
  * @param {tag} newTag - The data for a new tag to be created
  * @returns {Promise<tag>} The resulting tag model including uuid
  */
-export const createTag = (newTag) => {
-  return new Promise((resolve) => {
+export const createTag = newTag => {
+  return new Promise(resolve => {
     setTimeout(() => {
       const constructedTag = {
         uuid: uuid(), // UUID is automatically generated on submission
         title: newTag.title,
-        color: generateTagColor()
-      };
-      tags.push(constructedTag);
-      resolve(constructedTag);
-    }, latency);
-  });
-};
+        color: generateTagColor(),
+      }
+      tags.push(constructedTag)
+      resolve(constructedTag)
+    }, latency)
+  })
+}
 
 /**
  * Fetch a user
  * @param {string} uuid - The UUID of the user to find
  * @returns {Promise<user>} A user object with the matching UUID
  */
-export const fetchUser = (uuid) => {
-  return new Promise((resolve) => {
+export const fetchUser = uuid => {
+  return new Promise(resolve => {
     setTimeout(() => {
-      const user = users.find((u) => u.uuid === uuid);
-      resolve(user);
-    }, latency);
-  });
-};
+      const user = users.find(u => u.uuid === uuid)
+      resolve(user)
+    }, latency)
+  })
+}
 
 /**
  * Fetch a user's tags
  * @param {string} uuid - The UUID of the user to find
  * @returns {Promise<tag[]>} An array of tags assigned to the user with the matching UUID
  */
-export const fetchUserTags = (userUuid) => {
-  return new Promise((resolve) => {
+export const fetchUserTags = userUuid => {
+  return new Promise(resolve => {
     setTimeout(() => {
-      const user = users.find((u) => u.uuid === userUuid);
-      resolve(user.tags);
-    }, latency);
-  });
-};
+      const user = users.find(u => u.uuid === userUuid)
+      resolve(user.tags)
+    }, latency)
+  })
+}
 
 /**
  * Assign a tag to a user
@@ -117,14 +117,14 @@ export const fetchUserTags = (userUuid) => {
  * @returns {Promise<user>} The updated user model, including the new value for the `tags` array
  */
 export const assignUserTag = (userUuid, tagUuid) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
-      const user = users.find((u) => u.uuid === userUuid);
-      user.tags.push(tagUuid);
-      resolve(user);
-    }, latency);
-  });
-};
+      const user = users.find(u => u.uuid === userUuid)
+      user.tags.push(tagUuid)
+      resolve(user)
+    }, latency)
+  })
+}
 
 /**
  * Remove a tag from a user
@@ -133,11 +133,11 @@ export const assignUserTag = (userUuid, tagUuid) => {
  * @returns {Promise<user>} The updated user model, including the new value for the `tags` array
  */
 export const removeUserTag = (userUuid, tagUuid) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
-      const user = users.find((u) => u.uuid === userUuid);
-      user.tags = user.tags.filter((t) => t !== tagUuid);
-      resolve(user);
-    }, latency);
-  });
-};
+      const user = users.find(u => u.uuid === userUuid)
+      user.tags = user.tags.filter(t => t !== tagUuid)
+      resolve(user)
+    }, latency)
+  })
+}
