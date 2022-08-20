@@ -18,7 +18,7 @@ import uuid from 'uuid/dist/v4'
 const latency = 500
 
 /**
- * Mocked data storage
+ * Mocked data storageFun
  */
 const tags = [
   {
@@ -30,6 +30,16 @@ const tags = [
     uuid: 'eeee-ffff-gggg-hhhh',
     title: 'Fundraiser',
     color: 'blue',
+  },
+  {
+    uuid: 'iiii-jjjj-kkkk-llll',
+    title: 'Bobo the cat',
+    color: '#4654B2',
+  },
+  {
+    uuid: 'mmmm-nnnn-oooo-pppp',
+    title: 'Charity',
+    color: '#B7EDD5',
   },
 ]
 
