@@ -44,8 +44,16 @@ export default function App() {
       )
     } else {
       createTag({ title: event.title }).then(response =>
-        assignUserTag(userID, response.uuid).then(response =>
-          setUsertags([...response.tags])
+        assignUserTag(userID, response.uuid).then(
+          response => setUsertags([...response.tags])
+          // i attempted to just setUserTags and setAllTags
+          // without needed to assign the user taga and making
+          // another call to the API, but unfortunately - for
+          // whatever reason - it wasn't being detected by matchingTagObjects.
+          //i thought it was a reference vs comparison thing (because the
+          //reference to the array remains the same so i tried
+          // replacing it with a new variable but now dice.
+          // The consecutive api calls are probably why it's so slow.
         )
       )
     }
