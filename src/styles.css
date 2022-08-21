@@ -47,9 +47,9 @@
 @layer theme {
   /* This is strictly being used for globals. 
 CSS modules used for specific component information */
-  .App {
+  body {
     font-family: 'Prompt', sans-serif;
-    text-align: center;
+    margin: 0.8rem 1.2rem;
     background-color: #fbfbfc;
   }
 

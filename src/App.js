@@ -14,44 +14,54 @@ import { React, useState, useEffect, useMemo } from 'react'
 
 let userID = '1111-2222-3333-4444'
 export default function App() {
-  const [user, setUser] = useState([])
   const [usertags, setUsertags] = useState([])
   const [alltags, setAlltags] = useState([])
   const [inputVisible, setInputVisibility] = useState(false)
 
   const [tagQuery, setTagQuery] = useState({})
+
   useEffect(() => {
-    fetchUser(userID).then(response => {
-      setUser(response)
+    fetchUserTags(userID).then(response => {
+      setUsertags([...response])
     })
   }, [userID])
 
   useEffect(() => {
-    fetchUserTags(userID).then(response => {
-      setUsertags(response)
-    })
-
     fetchTags().then(response => {
-      setAlltags(response)
+      setAlltags([...response])
     })
-  }, [usertags, alltags])
+  }, [usertags])
 
-  const matchingTagObjects = () => {
-    const filteredtags = alltags.filter(tag => usertags.indexOf(tag.uuid) != -1)
-    return filteredtags
-  }
+  const matchingTagObjects = useMemo(() => {
+    if (alltags) {
+      const filteredtags = alltags.filter(
+        tag => usertags.indexOf(tag.uuid) != -1
+      )
+      return filteredtags
+    }
+  }, [alltags, usertags])
+
+  // I think React uses a comparison to check for changes in a memoised  variable
+  // so there is essentially "no change" as they're not going that deep -
+  // the stack's reference to the array is essentially the same.
+
   const toggleVisibility = () => {
     setInputVisibility(!inputVisible)
+    document.getElementById('headlessui-combobox-input-1').focus()
   }
 
   const addTag = event => {
-    console.log("Oh, i'm supposed to add a tag here. ")
     if (event.uuid) {
       assignUserTag(userID, event.uuid).then(response =>
-        setUsertags(response.tags)
+        setUsertags([...response.tags])
+      )
+    } else {
+      createTag({ title: event.title }).then(response =>
+        assignUserTag(userID, response.uuid).then(response =>
+          setUsertags([...response.tags])
+        )
       )
     }
-    matchingTagObjects()
   }
 
   const inputTags = () => {
@@ -70,17 +80,25 @@ export default function App() {
     }
   }
 
+  const removeTag = event => {
+    let uuid = event.target.id
+    removeUserTag(userID, uuid).then(response =>
+      setUsertags([...response.tags])
+    )
+  }
+
   return (
     <div className="App">
-      <h1>We're viewing {user.fullName}'s tags!</h1>
-      {matchingTagObjects().length > 0 && (
+      <h1 className={styles.tagheader}>Tag viewer</h1>
+      {matchingTagObjects.length > 0 && (
         <div className={styles.taglist}>
-          {matchingTagObjects().map(tag => (
+          {matchingTagObjects.map(tag => (
             <Tag
               key={tag.uuid}
               identifier={tag.uuid}
               title={tag.title}
               color={tag.color}
+              onClose={removeTag}
             />
           ))}
           <div
@@ -110,7 +128,7 @@ export default function App() {
                         </Combobox.Option>
                       ))}
                     {tagQuery.length > 0 && (
-                      <Combobox.Option value={{ id: null, name: tagQuery }}>
+                      <Combobox.Option value={{ id: null, title: tagQuery }}>
                         <span className={styles['add-option']}>
                           <span className={styles['add-button']}>+</span>Create
                           tag
@@ -132,47 +150,6 @@ export default function App() {
           </div>
         </div>
       )}
-
-      <hr />
-
-      <button onClick={() => fetchTags().then(console.log)}>Get Tags</button>
-      <button
-        onClick={() => fetchUser('1111-2222-3333-4444').then(console.log)}
-      >
-        Get User
-      </button>
-      <button
-        onClick={() => fetchUserTags('1111-2222-3333-4444').then(console.log)}
-      >
-        Get User Tags
-      </button>
-      <button
-        onClick={() =>
-          createTag({ title: 'My tag ' + Math.random() }).then(console.log)
-        }
-      >
-        Create new tag
-      </button>
-      <button
-        onClick={() =>
-          assignUserTag('1111-2222-3333-4444', prompt('Enter a Tag UUID')).then(
-            console.log
-          )
-        }
-      >
-        Assign Tag
-      </button>
-      <button
-        onClick={() =>
-          removeUserTag('1111-2222-3333-4444', prompt('Enter a Tag UUID')).then(
-            console.log
-          )
-        }
-      >
-        Remove Tag
-      </button>
     </div>
   )
 }
-
-// SCRATCH NOTES:
