@@ -1,0 +1,81 @@
+/* Tag base styles */
+
+.tag {
+  padding: 0.2rem 1.1rem 0.1rem 1.1rem;
+  border: 1px solid;
+  font-size: 1.2rem;
+  font-weight: 500;
+  border-radius: 1.2rem;
+  background-color: #ccc;
+  display: inline-flex;
+  flex-direction: row;
+  transition: padding-right 200ms ease-out;
+}
+
+.close {
+  font-family: 'Prompt', sans-serif;
+  font-size: 1.3rem;
+  transform: translateY(0.12rem);
+  font-weight: 600;
+  transition: all 200ms ease-in-out;
+  width: 0;
+  height: auto;
+  opacity: 0%;
+  display: inline;
+  overflow: hidden;
+}
+.close svg {
+  stroke-width: 2px;
+}
+.tag:hover {
+  padding-right: 1.4rem;
+}
+.tag:hover .close {
+  cursor: pointer;
+  transform: translateY(0.12rem) translateX(0.6rem);
+  width: 0.7rem;
+  opacity: 100%;
+}
+
+/* Tag alternate styles */
+
+.tag.tag--C8E8FF {
+  background-color: #c8e8ff;
+  border-color: #18547e;
+  color: #18547e;
+}
+.tag.tag--C8E8FF .close svg {
+  fill: #18547e;
+}
+.tag.tag--B2419A {
+  background-color: #b2419a;
+  border-color: #792066;
+  color: #fff;
+}
+.tag.tag--B2419A .close svg {
+  fill: #fff;
+}
+.tag.tag--EDB7B7 {
+  background-color: #edb7b7;
+  border-color: #903b3b;
+  color: #903b3b;
+}
+.tag.tag--EDB7B7 .close svg {
+  fill: #903b3b;
+}
+.tag.tag--4654B2 {
+  background-color: #4654b2;
+  border-color: #26327f;
+  color: #fff;
+}
+.tag.tag--4654B2 .close svg {
+  fill: #fff;
+}
+.tag.tag--B7EDD5 {
+  background-color: #b7edd5;
+  border-color: #529f7c;
+  color: #529f7c;
+}
+.tag.tag--B7EDD5 .close svg {
+  fill: #529f7c;
+}
