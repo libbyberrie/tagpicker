@@ -3,6 +3,7 @@
 .combobox {
   position: relative;
   display: flex;
+  align-items: center;
 }
 .combobox input {
   width: 0%;
@@ -14,6 +15,7 @@
   font-family: 'Prompt', sans-serif;
   font-size: 1.2rem;
   color: #454566;
+  padding: 0;
 }
 .combobox.visible {
   overflow: visible;
@@ -21,7 +23,6 @@
 .combobox.visible input {
   outline: none;
   padding: 0.2rem 1rem;
-
   width: 100%;
   max-width: 12rem;
   opacity: 1;
