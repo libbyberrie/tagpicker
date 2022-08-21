@@ -62,4 +62,11 @@ CSS modules used for specific component information */
     white-space: nowrap;
     width: 1px;
   }
+
+  /* this is placed in globals because the hover goes beyond the css modules, 
+  and passing props seemed inefficient. 
+  Unfortunately, important had to be used as technically css modules are on the layer above this*/
+  #button-parent:hover #addbutton {
+    opacity: 1 !important;
+  }
 }
