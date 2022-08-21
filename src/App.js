@@ -1,11 +1,10 @@
-import Tag from './components/Tag'
+import Tag from './components/tag'
 import './styles.css'
 import styles from './styles/taglist.module.css'
-import { Transition, Combobox } from '@headlessui/react'
+import Dropdown from './components/dropdown'
 import {
   fetchTags,
   createTag,
-  fetchUser,
   fetchUserTags,
   assignUserTag,
   removeUserTag,
@@ -16,9 +15,6 @@ let userID = '1111-2222-3333-4444'
 export default function App() {
   const [usertags, setUsertags] = useState([])
   const [alltags, setAlltags] = useState([])
-  const [inputVisible, setInputVisibility] = useState(false)
-
-  const [tagQuery, setTagQuery] = useState({})
 
   useEffect(() => {
     fetchUserTags(userID).then(response => {
@@ -41,18 +37,9 @@ export default function App() {
     }
   }, [alltags, usertags])
 
-  // I think React uses a comparison to check for changes in a memoised  variable
-  // so there is essentially "no change" as they're not going that deep -
-  // the stack's reference to the array is essentially the same.
-
-  const toggleVisibility = () => {
-    setInputVisibility(!inputVisible)
-    document.getElementById('headlessui-combobox-input-1').focus()
-  }
-
   const addTag = event => {
-    if (event.uuid) {
-      assignUserTag(userID, event.uuid).then(response =>
+    if (event.id) {
+      assignUserTag(userID, event.id).then(response =>
         setUsertags([...response.tags])
       )
     } else {
@@ -61,22 +48,6 @@ export default function App() {
           setUsertags([...response.tags])
         )
       )
-    }
-  }
-
-  const inputTags = () => {
-    const notUserTags = alltags.filter(tag => usertags.indexOf(tag.uuid) === -1)
-    if (notUserTags.length > 0 && tagQuery.length > 0) {
-      let matchingvalues = []
-      // For whatever reason, nesting the includes within a filter wasn't working? so i had to use a map function instead. Bit lost as to why
-      notUserTags.map(tag => {
-        if (tag.title.toLowerCase().includes(tagQuery.toLowerCase())) {
-          matchingvalues.push(tag)
-        }
-      })
-      return matchingvalues
-    } else {
-      return notUserTags
     }
   }
 
@@ -91,7 +62,7 @@ export default function App() {
     <div className="App">
       <h1 className={styles.tagheader}>Tag viewer</h1>
       {matchingTagObjects.length > 0 && (
-        <div className={styles.taglist}>
+        <div className={styles.taglist} id="button-parent">
           {matchingTagObjects.map(tag => (
             <Tag
               key={tag.uuid}
@@ -101,53 +72,8 @@ export default function App() {
               onClose={removeTag}
             />
           ))}
-          <div
-            className={`${styles.combobox} ${
-              inputVisible ? styles.visible : ''
-            }`}
-          >
-            <Combobox value="" onChange={addTag}>
-              <Combobox.Input
-                onChange={event => setTagQuery(event.target.value)}
-                displayValue={tag => tag.title}
-              />
-              <div className={styles.comboboxdropdown}>
-                <Transition
-                  enter={styles['comboboxdropdown--transition']}
-                  enterFrom={styles['comboboxdropdown--invisible']}
-                  enterTo={styles['comboboxdropdown--visible']}
-                  leave={styles['comboboxdropdown--transition']}
-                  leaveFrom={styles['comboboxdropdown--visible']}
-                  leaveTo={styles['comboboxdropdown--invisible']}
-                >
-                  <Combobox.Options>
-                    {inputTags().length > 0 &&
-                      inputTags().map(tag => (
-                        <Combobox.Option key={tag.uuid} value={tag}>
-                          {tag.title}
-                        </Combobox.Option>
-                      ))}
-                    {tagQuery.length > 0 && (
-                      <Combobox.Option value={{ id: null, title: tagQuery }}>
-                        <span className={styles['add-option']}>
-                          <span className={styles['add-button']}>+</span>Create
-                          tag
-                        </span>
-                      </Combobox.Option>
-                    )}
-                  </Combobox.Options>
-                </Transition>
-              </div>
-            </Combobox>
-            <button
-              type="button"
-              className={styles[`add-button`]}
-              onClick={toggleVisibility}
-            >
-              <span>+</span>
-              <span className={styles.popup}>Add</span>
-            </button>
-          </div>
+
+          <Dropdown function={addTag} alltags={alltags} usertags={usertags} />
         </div>
       )}
     </div>
