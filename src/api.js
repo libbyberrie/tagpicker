@@ -31,16 +31,6 @@ const tags = [
     title: 'Fundraiser',
     color: 'blue',
   },
-  {
-    uuid: 'iiii-jjjj-kkkk-llll',
-    title: 'Bobo the cat',
-    color: '#4654B2',
-  },
-  {
-    uuid: 'mmmm-nnnn-oooo-pppp',
-    title: 'Charity',
-    color: '#B7EDD5',
-  },
 ]
 
 const users = [
